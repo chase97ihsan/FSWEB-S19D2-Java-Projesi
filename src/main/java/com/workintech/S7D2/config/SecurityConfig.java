@@ -22,9 +22,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
+    public AuthenticationManager authManager(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoAuthenticationProvider);
 
 
@@ -36,12 +37,13 @@ public class SecurityConfig {
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
-                   // auth.requestMatchers(HttpMethod.GET,"/account/**").hasAnyAuthority("USER","ADMIN");
-                    auth.requestMatchers(HttpMethod.POST,"/account/**").hasAnyAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.GET,"/account/**").hasAnyAuthority("USER","ADMIN");
+                    auth.requestMatchers(HttpMethod.POST,"/account/**").hasAnyAuthority("ADMIN","USER");
                     auth.requestMatchers(HttpMethod.PUT,"/account/**").hasAnyAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/account/**").hasAnyAuthority("ADMIN");
                     auth.anyRequest().authenticated();
                 })
+                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .oauth2Login(Customizer.withDefaults())
                 .build();

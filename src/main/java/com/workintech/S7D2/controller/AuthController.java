@@ -4,10 +4,7 @@ import com.workintech.S7D2.dto.RegistrationMember;
 import com.workintech.S7D2.entity.Member;
 import com.workintech.S7D2.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,4 +18,8 @@ public class AuthController {
     public Member register(@RequestBody RegistrationMember registrationMember){
         return  authenticationService.register(registrationMember.getEmail(),registrationMember.getPassword());
      }
+    @DeleteMapping("/deleteAll")
+    public void deleteAll() {
+        authenticationService.delete();
+    }
 }

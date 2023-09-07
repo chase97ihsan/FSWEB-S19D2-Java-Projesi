@@ -5,15 +5,18 @@ import com.workintech.S7D2.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @NoArgsConstructor
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
+    @Autowired
     public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
@@ -25,8 +28,8 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account findById(int id) {
-        Optional<Account> optional=accountRepository.findById(id);
-        if(optional.isPresent()){
+        Optional<Account> optional = accountRepository.findById(id);
+        if (optional.isPresent()) {
             return optional.get();
         }
         return null;
@@ -39,7 +42,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account delete(int id) {
-        Account account=findById(id);
+        Account account = findById(id);
         accountRepository.delete(account);
         return account;
     }

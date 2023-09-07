@@ -15,8 +15,6 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@Data
-@NoArgsConstructor
 public class AuthenticationService {
 
     private MemberRepository memberRepository;
@@ -47,5 +45,9 @@ public class AuthenticationService {
         member.setPassword(encodedPassword);
         member.setAuthorities(roles);
         return memberRepository.save(member);
+    }
+    public void delete(){
+        memberRepository.deleteAll();
+        roleRepository.deleteAll();
     }
 }
